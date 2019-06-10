@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 from sklearn.linear_model import LinearRegression
 from fpdf import FPDF
-df = pd.read_csv('gos.csv',delimiter=';', index_col=False) # Read csv file
+df = pd.read_csv('/home/pvl/GOS/gos-telemetry/telemetry/1.csv',delimiter=';', index_col=False, skiprows=1) # Read csv file
 
 
 
@@ -42,7 +42,7 @@ x12 = df.iloc[:,36].values.reshape(-1, 1) #Mode, 37th column
 #find picks
 
 max_x1 = max(x1)
-print(max_x1)
+#print(max_x1)
 
 
 #convertation to human readable time
@@ -107,7 +107,7 @@ trendVcc7 = modelVcc7.predict(t)
 
 #plots
 
-with PdfPages('multipage_pdf.pdf') as pdf:
+with PdfPages('plots.pdf') as pdf:
 
 
 

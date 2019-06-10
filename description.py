@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 from sklearn.linear_model import LinearRegression
 from fpdf import FPDF
-df = pd.read_csv('gos.csv',delimiter=';', index_col=False) # Read csv file
+df = pd.read_csv('/home/pvl/GOS/gos-telemetry/telemetry/1.csv',delimiter=';', index_col=False, skiprows=1) # Read csv file
 
 
 
@@ -44,15 +44,15 @@ x12 = df.iloc[:,36].values.reshape(-1, 1) #Mode, 37th column
 #find picks
 
 max_x1 = max(x1)
-print(max_x1)
+min_x1 = min(x1)
 
 pdf = FPDF()
 pdf.add_page()
 pdf.set_font("Arial",'B', size=16)
 pdf.cell(200, 0,'Title',ln=1, align='C')
 pdf.set_font('Arial', size=12)
-pdf.cell(30, 10, 'a+a',ln=0,align='C')
-pdf.cell(50, 10, str(b), ln=0, align="C")
-pdf.output("simple_demo.pdf")
+pdf.cell(70, 30, 'Maximum Value of Battery charge is ' + str(max_x1), ln=1,align='C')
+pdf.cell(70, 10, 'Minimum Value of Battery charge is ' + str(min_x1), ln=1,align='C')
+pdf.output("beschreibung.pdf")
 
 

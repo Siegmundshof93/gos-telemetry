@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-python3 csvread.py && python3 1.py
+python3 description.py && python3 csvread.py && python3 merger.py
