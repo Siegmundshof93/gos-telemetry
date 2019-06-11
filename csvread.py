@@ -14,15 +14,15 @@ df = pd.read_csv('/home/pvl/GOS/gos-telemetry/telemetry/1.csv',delimiter=';', in
 
 
 
-
 #Noise remover
 for k in range(len(df)):
-	if (df.iloc[k,3]>8):
+	if (df.iloc[k,3]>10):
 		#print('Found one')
 		#print(df.iloc[k-1,3],df.iloc[k,3])
 		df.iloc[k,:] = df.iloc[k-1,:]
 		#print('replaced it with', df.iloc[k,3])
 		#np.replace()
+
 
 
 t   = df.iloc[:, 0].values.reshape(-1, 1) # Time, first collumn
@@ -38,10 +38,9 @@ x9  = df.iloc[:,19].values.reshape(-1, 1) #Vcc5, 20th column
 x10 = df.iloc[:,20].values.reshape(-1, 1) #Vcc6, 21th column
 x11 = df.iloc[:,21].values.reshape(-1, 1) #Vcc7, 22th column
 x12 = df.iloc[:,36].values.reshape(-1, 1) #Mode, 37th column
-
 #find picks
 
-max_x1 = max(x1)
+
 #print(max_x1)
 
 
@@ -253,6 +252,7 @@ with PdfPages('plots.pdf') as pdf:
  #plt.show()
  pdf.savefig()
  plt.close()
+
 
 
 
