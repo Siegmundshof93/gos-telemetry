@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 from sklearn.linear_model import LinearRegression
 from fpdf import FPDF
-df = pd.read_csv('/home/pvl/GOS/gos-telemetry/telemetry/1.csv',delimiter=';', index_col=False, skiprows=1) # Read csv file
+df = pd.read_csv(file_path, delimiter=';', index_col=False, skiprows=1) # Read csv file
 
 
 
@@ -44,7 +44,7 @@ x10 = df.iloc[:,20].values.reshape(-1, 1) #Vcc6, 21th column
 x11 = df.iloc[:,21].values.reshape(-1, 1) #Vcc7, 22th column
 x12 = df.iloc[:,36].values.reshape(-1, 1) #Mode, 37th column
 x13 = df.iloc[:,41].values.reshape(-1, 1) #Satellite ID
-print(x13)
+
 #sat identifizirung
 zweiSat = np.array(x13).reshape((1, len(df)))
 einSat = zweiSat.flatten()
@@ -85,11 +85,11 @@ pdf = FPDF()
 pdf.add_page()
 pdf.set_font("Arial",'B', size=16)
 if sat == 50:
-    pdf.cell(200, 0,'Jaisat',ln=1, align='C')
+    pdf.cell(200, 30,'Jaisat',ln=1, align='C')
 elif sat == 40:
-    pdf.cell(200, 0,'Lightsat',ln=1, align='C')
+    pdf.cell(200, 30,'Lightsat',ln=1, align='C')
 elif sat == 10:
-    pdf.cell(200, 0,'Exoconnect',ln=1, align='C')
+    pdf.cell(200, 30,'Exoconnect',ln=1, align='C')
 pdf.set_font('Arial', size=12)
 pdf.cell(30, 10, 'Maximum Value of Battery charge is ' + str(max_x1), ln=0,align='L')
 pdf.cell(160, 10, 'Minimum Value of Battery charge is ' + str(min_x1), ln=1,align='R')
@@ -119,3 +119,4 @@ pdf.cell(160, 10, 'Minimum Value of Battery Vcc7 is ' + str(min_x11), ln=1,align
 pdf.output("beschreibung.pdf")
 
 
+exec(open("./merger.py").read())

@@ -1,3 +1,4 @@
+import tkinter as tk
 import csv
 import numpy as np
 import pandas as pd
@@ -8,11 +9,24 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 from sklearn.linear_model import LinearRegression
 from fpdf import FPDF
-df = pd.read_csv('/home/pvl/GOS/gos-telemetry/telemetry/1.csv',delimiter=';', index_col=False, skiprows=1) # Read csv file
+from tkinter import filedialog
+from tkinter import simpledialog
 
 
+ 
+app_window = tk.Tk()
+app_window.withdraw()
 
+#data = 'planet_order_301232.zip'
+#data = 'Zip/planet_order_301232.zip' #full zip file path
+file_path = filedialog.askopenfile(initialdir='/home/pvl/GOS/gos-telemetry/telemetry/',
+title='Select the ZIP file'
+).name #dialog window, for manuel ZIP-file search
 
+df = pd.read_csv(file_path, delimiter=';', index_col=False, skiprows=1) # Read csv file
+
+#path = '/'.join(file_path.split('/')[:-1])
+#print(file_path, path)
 
 #Noise remover
 for k in range(len(df)):
@@ -253,6 +267,7 @@ with PdfPages('plots.pdf') as pdf:
  pdf.savefig()
  plt.close()
 
+exec(open("./description.py").read())
 
 
 
