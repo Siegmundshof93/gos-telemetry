@@ -1,5 +1,4 @@
 from fpdf import FPDF
-
 import csv
 import numpy as np
 import pandas as pd
@@ -51,7 +50,7 @@ einSat = zweiSat.flatten()
 counts = np.bincount(einSat)
 sat = np.argmax(counts)
 
-
+a = ('A')
 
 #find picks
 
@@ -90,7 +89,7 @@ elif sat == 40:
     pdf.cell(200, 30,'Lightsat',ln=1, align='C')
 elif sat == 10:
     pdf.cell(200, 30,'Exoconnect',ln=1, align='C')
-pdf.set_font('Arial', size=12)
+pdf.set_font('Arial', size=10)
 pdf.cell(30, 10, 'Maximum Value of Battery charge is ' + str(max_x1), ln=0,align='L')
 pdf.cell(160, 10, 'Minimum Value of Battery charge is ' + str(min_x1), ln=1,align='R')
 pdf.cell(30, 10, 'Maximum Value of Battery discharge is ' + str(max_x2), ln=0,align='L')

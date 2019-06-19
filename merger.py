@@ -6,6 +6,6 @@ merger = PdfFileMerger()
 
 for pdf in pdfs:
     merger.append(open(pdf, 'rb'))
-
-with open('ergebnisse.pdf', 'wb') as fout:
+print(path)
+with open(fileName, 'wb') as fout:
     merger.write(fout)

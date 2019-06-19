@@ -13,21 +13,24 @@ from tkinter import filedialog
 from tkinter import simpledialog
 
 
- 
+
+
 app_window = tk.Tk()
 app_window.withdraw()
 
-#data = 'planet_order_301232.zip'
-#data = 'Zip/planet_order_301232.zip' #full zip file path
-file_path = filedialog.askopenfile(initialdir='/home/pvl/GOS/gos-telemetry/telemetry/',
-title='Select the ZIP file'
-).name #dialog window, for manuel ZIP-file search
+file_path = filedialog.askopenfile(initialdir='/home/pvl/GOS/gos-telemetry/log/',
+title='Select telemetry'
+).name #dialog window, for manual telemetry search
+#file_path = '/home/pvl/GOS/gos-telemetry/log/2019.05.24_14.31.37_log.csv'
+
 
 df = pd.read_csv(file_path, delimiter=';', index_col=False, skiprows=1) # Read csv file
 
-#path = '/'.join(file_path.split('/')[:-1])
-#print(file_path, path)
+path = (file_path.split('/')[6])
+#2019.05.25_11.43.14_log.csv
+fileName = (path.replace('csv', 'pdf'))
 
+#print(file_path, path)
 #Noise remover
 for k in range(len(df)):
 	if (df.iloc[k,3]>10):
@@ -55,7 +58,7 @@ x12 = df.iloc[:,36].values.reshape(-1, 1) #Mode, 37th column
 #find picks
 
 
-#print(max_x1)
+
 
 
 #convertation to human readable time
@@ -123,13 +126,6 @@ trendVcc7 = modelVcc7.predict(t)
 with PdfPages('plots.pdf') as pdf:
 
 
-
-
-
-
-
-
-
  plt.subplot()
  plt.title('Battery charge/discharge')
  plt.plot(time, x1, color='red', label='charge')
@@ -143,8 +139,8 @@ with PdfPages('plots.pdf') as pdf:
 # plt.show()
  pdf.savefig()
 
- plt.close() 
- 
+ plt.close()
+
 
  plt.subplot()
  plt.title('Battery Voltage')
@@ -258,7 +254,7 @@ with PdfPages('plots.pdf') as pdf:
 
  plt.subplot()
  plt.title('Mode')
- plt.plot(time, x12, label='current')
+ plt.plot(time, x12, label='mode')
  plt.ylabel('')
  plt.xlabel('time')
  plt.legend(loc='upper right')
@@ -268,7 +264,3 @@ with PdfPages('plots.pdf') as pdf:
  plt.close()
 
 exec(open("./description.py").read())
-
-
-
-

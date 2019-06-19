@@ -14,12 +14,12 @@ ft = ttk.Frame()
 def firstFile ():
     global ein
     ein = 'python3 csvread.py '
-    
+
     os.system(ein)
-    
+
 #button
-  
-button1 = tk.Button(text='      run    ', command=firstFile, bg='burlywood3', fg='white', font=('helvetica', 12, 'bold'))
+
+button1 = tk.Button(text='     run    ', command=firstFile, bg='burlywood3', fg='gray1', font=('helvetica', 12, 'bold'))
 canvas1.create_window(150, 50, window=button1)
 
 
@@ -31,6 +31,5 @@ panel.pack(side = "bottom", fill = "both", expand = "no")
 
 
 
-    
 
 root.mainloop()
