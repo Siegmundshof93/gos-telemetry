@@ -11,8 +11,8 @@ from sklearn.linear_model import LinearRegression
 from fpdf import FPDF
 from tkinter import filedialog
 from tkinter import simpledialog
-
-
+from scipy.signal import lfilter
+import sys
 
 
 app_window = tk.Tk()
@@ -21,16 +21,15 @@ app_window.withdraw()
 file_path = filedialog.askopenfile(initialdir='/home/pvl/GOS/gos-telemetry/log/',
 title='Select telemetry'
 ).name #dialog window, for manual telemetry search
-#file_path = '/home/pvl/GOS/gos-telemetry/log/2019.05.24_14.31.37_log.csv'
+
 
 
 df = pd.read_csv(file_path, delimiter=';', index_col=False, skiprows=1) # Read csv file
 
+#name of final pdf file
 path = (file_path.split('/')[6])
-#2019.05.25_11.43.14_log.csv
 fileName = (path.replace('csv', 'pdf'))
 
-#print(file_path, path)
 #Noise remover
 for k in range(len(df)):
 	if (df.iloc[k,3]>10):
@@ -44,18 +43,33 @@ for k in range(len(df)):
 
 t   = df.iloc[:, 0].values.reshape(-1, 1) # Time, first collumn
 x1  = df.iloc[:, 1].values.reshape(-1, 1) # Charge of Battery, second column
+x1 = np.around(x1, decimals=2)
 x2  = df.iloc[:, 2].values.reshape(-1, 1) # Discharge of Battery, third column
+x2 = np.around(x2, decimals=2)
 x3  = df.iloc[:, 3].values.reshape(-1, 1) #Voltage of the battery, forth column
+x3 = np.around(x3, decimals=2)
 x4  = df.iloc[:,14].values.reshape(-1, 1) #Vcc0, 15th column
+x4 = np.around(x4, decimals=2)
 x5  = df.iloc[:,15].values.reshape(-1, 1) #Vcc1, 16th column
+x5 = np.around(x5, decimals=2)
 x6  = df.iloc[:,16].values.reshape(-1, 1) #Vcc2, 17th column
+x6 = np.around(x6, decimals=2)
 x7  = df.iloc[:,17].values.reshape(-1, 1) #Vcc3, 18th column
+x7 = np.around(x7, decimals=2)
 x8  = df.iloc[:,18].values.reshape(-1, 1) #Vcc4, 19th column
+x8 = np.around(x8, decimals=2)
 x9  = df.iloc[:,19].values.reshape(-1, 1) #Vcc5, 20th column
+x9 = np.around(x9, decimals=2)
 x10 = df.iloc[:,20].values.reshape(-1, 1) #Vcc6, 21th column
+x10 = np.around(x10, decimals=2)
 x11 = df.iloc[:,21].values.reshape(-1, 1) #Vcc7, 22th column
+x11 = np.around(x11, decimals=2)
 x12 = df.iloc[:,36].values.reshape(-1, 1) #Mode, 37th column
+x13 = df.iloc[:,41].values.reshape(-1, 1) #Satellite ID
+
 #find picks
+
+
 
 
 
@@ -64,7 +78,7 @@ x12 = df.iloc[:,36].values.reshape(-1, 1) #Mode, 37th column
 #convertation to human readable time
 time = np.array(t/1000)
 time = np.asarray(time, dtype='datetime64[s]')
-
+#print(time)
 
 #trendline for charge
 modelCharge = LinearRegression()
@@ -121,6 +135,28 @@ modelVcc7 = LinearRegression()
 modelVcc7.fit(t, x11)
 trendVcc7 = modelVcc7.predict(t)
 
+
+
+"""
+n = 3  # the larger n is, the smoother curve will be
+koefficient = [1.0 / n] * n
+print(koefficient)
+polynomial = 1
+
+
+r1 = lfilter(koefficient,polynomial,x1)
+r2 = lfilter(koefficient,polynomial,x2)
+r3 = lfilter(koefficient,polynomial,x3)
+r4 = lfilter(koefficient,polynomial,x4)
+r5 = lfilter(koefficient,polynomial,x5)
+r6 = lfilter(koefficient,polynomial,x6)
+r7 = lfilter(koefficient,polynomial,x7)
+r8 = lfilter(koefficient,polynomial,x8)
+r9 = lfilter(koefficient,polynomial,x9)
+r10 = lfilter(koefficient,polynomial,x10)
+r11 = lfilter(koefficient,polynomial,x11)
+
+"""
 #plots
 
 with PdfPages('plots.pdf') as pdf:
@@ -254,7 +290,7 @@ with PdfPages('plots.pdf') as pdf:
 
  plt.subplot()
  plt.title('Mode')
- plt.plot(time, x12, label='mode')
+ plt.plot(time, x12, label='Mode')
  plt.ylabel('')
  plt.xlabel('time')
  plt.legend(loc='upper right')

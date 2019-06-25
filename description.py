@@ -1,48 +1,3 @@
-from fpdf import FPDF
-import csv
-import numpy as np
-import pandas as pd
-import numpy as np
-import time
-import datetime
-from collections import Counter
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_pdf import PdfPages
-from sklearn.linear_model import LinearRegression
-from fpdf import FPDF
-df = pd.read_csv(file_path, delimiter=';', index_col=False, skiprows=1) # Read csv file
-
-
-
-
-
-
-#Noise remover
-for k in range(len(df)):
-	if (df.iloc[k,3]>8):
-		#print('Found one')
-		#print(df.iloc[k-1,3],df.iloc[k,3])
-		df.iloc[k,:] = df.iloc[k-1,:]
-		#print('replaced it with', df.iloc[k,3])
-		#np.replace()
-
-
-
-
-t   = df.iloc[:, 0].values.reshape(-1, 1) # Time, first collumn
-x1  = df.iloc[:, 1].values.reshape(-1, 1) # Charge of Battery, second column
-x2  = df.iloc[:, 2].values.reshape(-1, 1) # Discharge of Battery, third column
-x3  = df.iloc[:, 3].values.reshape(-1, 1) #Voltage of the battery, forth column
-x4  = df.iloc[:,14].values.reshape(-1, 1) #Vcc0, 15th column
-x5  = df.iloc[:,15].values.reshape(-1, 1) #Vcc1, 16th column
-x6  = df.iloc[:,16].values.reshape(-1, 1) #Vcc2, 17th column
-x7  = df.iloc[:,17].values.reshape(-1, 1) #Vcc3, 18th column
-x8  = df.iloc[:,18].values.reshape(-1, 1) #Vcc4, 19th column
-x9  = df.iloc[:,19].values.reshape(-1, 1) #Vcc5, 20th column
-x10 = df.iloc[:,20].values.reshape(-1, 1) #Vcc6, 21th column
-x11 = df.iloc[:,21].values.reshape(-1, 1) #Vcc7, 22th column
-x12 = df.iloc[:,36].values.reshape(-1, 1) #Mode, 37th column
-x13 = df.iloc[:,41].values.reshape(-1, 1) #Satellite ID
 
 #sat identifizirung
 zweiSat = np.array(x13).reshape((1, len(df)))
@@ -50,45 +5,172 @@ einSat = zweiSat.flatten()
 counts = np.bincount(einSat)
 sat = np.argmax(counts)
 
-a = ('A')
 
 #find picks
-
 max_x1  = max(x1 )
+max_x1 = np.around(max_x1, decimals=2) * 1000
+#max_x1 = np.savetxt(sys.stdout.buffer, max_x1)
+#print(max_x1)
+
 min_x1  = min(x1 )
+min_x1 = np.around(min_x1, decimals=2) * 1000
+#min_x1 = np.savetxt(sys.stdout.buffer, min_x1)
+
+
 max_x2  = max(x2 )
+max_x2 = np.around(max_x2, decimals=2) * 1000
+
 min_x2  = min(x2 )
+min_x2 = np.around(min_x2, decimals=2) * 1000
+
 max_x3  = max(x3 )
+max_x3 = np.around(max_x3, decimals=2)
+
 min_x3  = min(x3 )
+max_x3 = np.around(max_x3, decimals=2)
+
 max_x4  = max(x4 )
+max_x4 = np.around(max_x4, decimals=2) * 1000
+
 min_x4  = min(x4 )
+min_x4 = np.around(min_x4, decimals=2) * 1000
+
 max_x5  = max(x5 )
+max_x5 = np.around(max_x5, decimals=2) * 1000
+
 min_x5  = min(x5 )
+min_x5 = np.around(min_x5, decimals=2) * 1000
+
 max_x6  = max(x6 )
+max_x6 = np.around(max_x6, decimals=2) * 1000
+
 min_x6  = min(x6 )
+min_x6 = np.around(min_x6, decimals=2) * 1000
+
 max_x7  = max(x7 )
+max_x7 = np.around(max_x7, decimals=2) * 1000
+
 min_x7  = min(x7 )
+min_x7 = np.around(min_x7, decimals=2) * 1000
+
 max_x8  = max(x8 )
+max_x8 = np.around(max_x8, decimals=2) * 1000
+
 min_x8  = min(x8 )
+min_x8 = np.around(min_x8, decimals=2) * 1000
+
 max_x9  = max(x9 )
+max_x9 = np.around(max_x9, decimals=2) * 1000
+
 min_x9  = min(x9 )
+min_x9 = np.around(min_x9, decimals=2) * 1000
+
 max_x10 = max(x10)
+max_x10 = np.around(max_x10, decimals=2) * 1000
+
 min_x10 = min(x10)
+min_x10 = np.around(min_x10, decimals=2) * 1000
+
 max_x11 = max(x11)
+max_x11 = np.around(max_x11, decimals=2) * 1000
+
 min_x11 = min(x11)
-max_x12 = max(x12)
-min_x12 = min(x12)
+min_x11 = np.around(min_x11, decimals=2) * 1000
+
+
+#mean values
+m1 = x1.mean()
+m1 = np.around(m1, 2)
+m2 = x2.mean()
+m2 = np.around(m2, 2)
+m3 = x3.mean()
+m3 = np.around(m3, 2)
+m4 = x4.mean()
+m4 = np.around(m4, 2)
+m5 = x5.mean()
+m5 = np.around(m5, 2)
+m6 = x6.mean()
+m6 = np.around(m6, 2)
+m7 = x7.mean()
+m7 = np.around(m7, 2)
+m8 = x8.mean()
+m8 = np.around(m8, 2)
+m9 = x9.mean()
+m9 = np.around(m9, 2)
+m10 = x10.mean()
+m10 = np.around(m10, 2)
+m11 = x11.mean()
+m11 = np.around(m11, 2)
+
+
+
 
 #strings in pdf
 pdf = FPDF()
 pdf.add_page()
+
 pdf.set_font("Arial",'B', size=16)
+pdf.cell(0, 30,'Report',ln=1, align='C')
+
+pdf.set_font("Arial", size=10)
+#pdf.set_text_color(184,134,11)
 if sat == 50:
-    pdf.cell(200, 30,'Jaisat',ln=1, align='C')
+    pdf.cell(0, 30,'satellite: Jaisat',ln=1, align='L')
 elif sat == 40:
-    pdf.cell(200, 30,'Lightsat',ln=1, align='C')
+    pdf.cell(0, 30,'satellite: Lightsat',ln=1, align='L')
 elif sat == 10:
-    pdf.cell(200, 30,'Exoconnect',ln=1, align='C')
+    pdf.cell(0, 30,'satellite: Exoconnect',ln=1, align='L')
+
+pdf.set_font('Arial', size=10)
+pdf.cell(0, 0, 'Beguinning of the contact: ' + str(time[0]), ln=1,align='L')
+pdf.cell(0, 30, 'End of the contact: ' + str(time[len(time) - 1]), ln=1,align='L')
+
+
+#pdf.cell(40, 10, 'End of the contact ' + str(time[len(df)]), ln=0,align='L')
+
+
+pdf.set_font('Arial','',10)
+
+# Effective page width, or just epw
+epw = pdf.w - 2*pdf.l_margin
+
+# Set column width to 1/4 of effective page width to distribute content
+# evenly across table and page
+col_width = epw/4
+
+# Since we do not need to draw lines anymore, there is no need to separate
+# headers from data matrix.
+
+data = [['Channel','Min. value','Mean Value','Max Value'],
+['Battery charge [mA]',min_x1,m1,max_x1],
+['Battery discharge [mA]',min_x2,m2,max_x2],
+['Battery Voltage [V]',min_x3,m3, min_x3 ],
+['Vcc0 [mA]',min_x4,m4,max_x4],
+['Vcc1 [mA]',min_x5,m5,max_x5],
+['Vcc2 [mA]',min_x6,m6,max_x6],
+['Vcc3 [mA]',min_x7,m7,max_x7],
+['Vcc4 [mA]',min_x8,m8,max_x8],
+['Vcc5 [mA]',min_x9,m9,max_x9],
+['Vcc6 [mA]',min_x10,m10,max_x10],
+['Vcc7 [mA]',min_x11,m11,max_x11]]
+
+
+# Text height is the same as current font size
+th = pdf.font_size
+
+# Here we add more padding by passing 2*th as height
+for row in data:
+    for datum in row:
+        # Enter data in colums
+        pdf.cell(col_width, 2*th, str(datum), border=1)
+
+    pdf.ln(2*th)
+
+
+
+
+
+"""
 pdf.set_font('Arial', size=10)
 pdf.cell(30, 10, 'Maximum Value of Battery charge is ' + str(max_x1), ln=0,align='L')
 pdf.cell(160, 10, 'Minimum Value of Battery charge is ' + str(min_x1), ln=1,align='R')
@@ -112,7 +194,7 @@ pdf.cell(30, 10, 'Maximum Value of Battery Vcc6 is ' + str(max_x10), ln=0,align=
 pdf.cell(160, 10, 'Minimum Value of Battery Vcc6 is ' + str(min_x10), ln=1,align='R')
 pdf.cell(30, 10, 'Maximum Value of Battery Vcc7 is ' + str(max_x11), ln=0,align='L')
 pdf.cell(160, 10, 'Minimum Value of Battery Vcc7 is ' + str(min_x11), ln=1,align='R')
-
+"""
 
 
 pdf.output("beschreibung.pdf")
