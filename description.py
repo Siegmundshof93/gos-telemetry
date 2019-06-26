@@ -79,6 +79,8 @@ m11 = np.around(m11, 2)
 
 
 
+
+######################################################################################################
 #strings in pdf
 pdf = FPDF()
 pdf.add_page()
@@ -100,7 +102,10 @@ pdf.cell(0, 0, 'Beguinning of the contact:         ' + beginning, ln=1,align='L'
 pdf.cell(0, 10, 'End of the contact:                     ' + end, ln=1,align='L')
 pdf.cell(0, 10, 'Duration of the communication : ' + DauerZeit, ln=1,align='L')
 
-
+for i in np.arange (0, len(df)):
+    if x14[i] != x14[i - 1]:
+        pdf.cell(0, 3,str(time[i]),ln=0, align='L')
+        pdf.cell(0, 3,str(x14[i]),ln=1, align='R')
 
 
 pdf.set_font('Arial','',10)
@@ -140,10 +145,8 @@ for row in data:
 
     pdf.ln(2*th)
 
-
-
-
 pdf.output("beschreibung.pdf")
+
 
 
 exec(open("./merger.py").read())

@@ -67,7 +67,7 @@ x11 = df.iloc[:,21].values.reshape(-1, 1) #Vcc7, 22th column
 x11 = np.around(x11, decimals=2)
 x12 = df.iloc[:,36].values.reshape(-1, 1) #Mode, 37th column
 x13 = df.iloc[:,41].values.reshape(-1, 1) #Satellite ID
-x14 = df.iloc[:,35].values.reshape(-1, 1) #Mode, 37th column
+x14 = df.iloc[:,35].values.reshape(-1, 1) #Umschalter, 37th column
 #find picks
 
 
