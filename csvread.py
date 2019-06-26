@@ -13,7 +13,8 @@ from tkinter import filedialog
 from tkinter import simpledialog
 from scipy.signal import lfilter
 import sys
-
+import fitz
+from PyPDF2 import PdfFileMerger
 
 app_window = tk.Tk()
 app_window.withdraw()
@@ -66,7 +67,7 @@ x11 = df.iloc[:,21].values.reshape(-1, 1) #Vcc7, 22th column
 x11 = np.around(x11, decimals=2)
 x12 = df.iloc[:,36].values.reshape(-1, 1) #Mode, 37th column
 x13 = df.iloc[:,41].values.reshape(-1, 1) #Satellite ID
-
+x14 = df.iloc[:,35].values.reshape(-1, 1) #Mode, 37th column
 #find picks
 
 
@@ -76,9 +77,26 @@ x13 = df.iloc[:,41].values.reshape(-1, 1) #Satellite ID
 
 
 #convertation to human readable time
-time = np.array(t/1000)
-time = np.asarray(time, dtype='datetime64[s]')
-#print(time)
+timeUtc = np.array(t/1000)
+time = np.asarray(timeUtc, dtype='datetime64[s]')
+
+#dauer Zeit von kommunikazon
+diff = timeUtc[len(df) - 1] - timeUtc[0]
+
+timeDiff = np.asarray(diff, dtype='datetime64[s]')
+timeDiff = str(timeDiff)
+DauerZeit = (timeDiff.split('T')[1])
+DauerZeit = DauerZeit[:-2]
+
+beginning = time[0]
+beginning = str(beginning)[2:21]
+beginning = (beginning.replace('T', ' '))
+
+end = time[len(df) - 1]
+end = str(end)[2:21]
+end = (end.replace('T', ' '))
+
+
 
 #trendline for charge
 modelCharge = LinearRegression()
@@ -180,8 +198,8 @@ with PdfPages('plots.pdf') as pdf:
 
  plt.subplot()
  plt.title('Battery Voltage')
- plt.plot(time, x3, label='voltage')
- plt.plot(time, trendVoltage,'b--')
+ plt.plot(time, x3, color ='gray', label='voltage')
+ plt.plot(time, trendVoltage,'k--')
  plt.ylabel('Voltage level [V]')
  plt.xlabel('time')
  plt.legend(loc='upper right')
@@ -192,8 +210,8 @@ with PdfPages('plots.pdf') as pdf:
 
  plt.subplot()
  plt.title('Vcc 0')
- plt.plot(time, x4, label='current')
- plt.plot(time, trendVcc0,'b--')
+ plt.plot(time, x4, color='c', label='current')
+ plt.plot(time, trendVcc0,'k--')
  plt.ylabel('Consumed current [A]')
  plt.xlabel('time')
  plt.legend(loc='upper right')
@@ -204,8 +222,8 @@ with PdfPages('plots.pdf') as pdf:
 
  plt.subplot()
  plt.title('Vcc 1')
- plt.plot(time, x5, label='current')
- plt.plot(time, trendVcc1,'b--')
+ plt.plot(time, x5,color='y', label='current')
+ plt.plot(time, trendVcc1,'k--')
  plt.ylabel('Consumed current [A]')
  plt.xlabel('time')
  plt.legend(loc='upper right')
@@ -216,8 +234,8 @@ with PdfPages('plots.pdf') as pdf:
 
  plt.subplot()
  plt.title('Vcc 2')
- plt.plot(time, x6, label='current')
- plt.plot(time, trendVcc2,'b--')
+ plt.plot(time, x6, color='tomato', label='current')
+ plt.plot(time, trendVcc2,'k--')
  plt.ylabel('Consumed current [A]')
  plt.xlabel('time')
  plt.legend(loc='upper right')
@@ -228,8 +246,8 @@ with PdfPages('plots.pdf') as pdf:
 
  plt.subplot()
  plt.title('Vcc 3')
- plt.plot(time, x7, label='current')
- plt.plot(time, trendVcc3,'b--')
+ plt.plot(time, x7, color='darkviolet', label='current')
+ plt.plot(time, trendVcc3,'k--')
  plt.ylabel('Consumed current [A]')
  plt.xlabel('time')
  plt.legend(loc='upper right')
@@ -240,8 +258,8 @@ with PdfPages('plots.pdf') as pdf:
 
  plt.subplot()
  plt.title('Vcc 4')
- plt.plot(time, x8, label='current')
- plt.plot(time, trendVcc4,'b--')
+ plt.plot(time, x8, color='m',label='current')
+ plt.plot(time, trendVcc4,'k--')
  plt.ylabel('Consumed current [A]')
  plt.xlabel('time')
  plt.legend(loc='upper right')
@@ -252,8 +270,8 @@ with PdfPages('plots.pdf') as pdf:
 
  plt.subplot()
  plt.title('Vcc 5')
- plt.plot(time, x9, label='current')
- plt.plot(time, trendVcc5,'b--')
+ plt.plot(time, x9, color='maroon', label='current')
+ plt.plot(time, trendVcc5,'k--')
  plt.ylabel('Consumed current [A]')
  plt.xlabel('time')
  plt.legend(loc='upper right')
@@ -264,8 +282,8 @@ with PdfPages('plots.pdf') as pdf:
 
  plt.subplot()
  plt.title('Vcc 6')
- plt.plot(time, x10, label='current')
- plt.plot(time, trendVcc6,'b--')
+ plt.plot(time, x10, color='orange',label='current')
+ plt.plot(time, trendVcc6,'k--')
  plt.ylabel('Consumed current [A]')
  plt.xlabel('time')
  plt.legend(loc='upper right')
@@ -277,8 +295,8 @@ with PdfPages('plots.pdf') as pdf:
 
  plt.subplot()
  plt.title('Vcc 7')
- plt.plot(time, x11, label='current')
- plt.plot(time, trendVcc7,'b--')
+ plt.plot(time, x11, color='cyan', label='current')
+ plt.plot(time, trendVcc7,'k--')
  plt.ylabel('Consumed current [A]')
  plt.xlabel('time')
  plt.legend(loc='upper right')
@@ -298,5 +316,6 @@ with PdfPages('plots.pdf') as pdf:
  #plt.show()
  pdf.savefig()
  plt.close()
+
 
 exec(open("./description.py").read())
