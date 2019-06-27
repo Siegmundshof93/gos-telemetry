@@ -102,11 +102,15 @@ pdf.cell(0, 0, 'Beguinning of the contact:         ' + beginning, ln=1,align='L'
 pdf.cell(0, 10, 'End of the contact:                     ' + end, ln=1,align='L')
 pdf.cell(0, 10, 'Duration of the communication : ' + DauerZeit, ln=1,align='L')
 
+#Umschaltere
 for i in np.arange (0, len(df)):
     if x14[i] != x14[i - 1]:
-        pdf.cell(0, 3,str(time[i]),ln=0, align='L')
-        pdf.cell(0, 3,str(x14[i]),ln=1, align='R')
+        TimeString = str(time[i])[2:21]
+        TimeString = (TimeString.replace('T', ' '))
+        UmscString = str(x14[i])[2:44]
 
+        pdf.cell(0, 4,TimeString,ln=0, align='L')
+        pdf.cell(0, 4,UmscString,ln=1, align='R')
 
 pdf.set_font('Arial','',10)
 
@@ -144,6 +148,9 @@ for row in data:
         pdf.cell(col_width, 2*th, str(datum), border=1)
 
     pdf.ln(2*th)
+
+
+
 
 pdf.output("beschreibung.pdf")
 
